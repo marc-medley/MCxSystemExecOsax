@@ -11,13 +11,11 @@ import Foundation
 public class McShell {
     
     
-    /** shell: Graphics Magic convert resize
-     
-     ```
-     gm convert $ICON_SOURCE_IMAGE -resize 16x16     $ICON_NAME.iconset/icon_16x16.png
-     ```
-     
-     */
+    /// shell: Graphics Magic convert resize
+    /// 
+    /// ```
+    /// gm convert $ICON_SOURCE_IMAGE -resize 16x16     $ICON_NAME.iconset/icon_16x16.png
+    /// ```
     public static func gmConvertResize(fromPath: String, toPath: String, wxh: String, workPath: String) {
         var args: [String] = []
         args.append("convert")
@@ -33,20 +31,40 @@ public class McShell {
         )
     }
     
-    /**
-     
-     ```
-     iconutil --convert icns input_folder.iconset
-     # :NYI:  --convert iconset ... from icon to folder of images
-     ```
-     
-     */
-    public static func iconutilIcns(iconsetFolder: String, workPath: String) {
+    /// Convert name.iconset to name.icns
+    ///
+    /// ```
+    /// iconutil --convert icns input_folder.iconset
+    /// ```
+    public static func iconutilIconsetToIcns(iconsetFolder: String, workPath: String) {
         print("iconsetFolder = \(iconsetFolder)")
         var args: [String] = []
         args.append("--convert")
         args.append("icns")
         args.append(iconsetFolder)
+        
+        _ = McProcess.run(
+            commandPath: McProcessPath.iconutil, 
+            withArguments: args, 
+            workDirectory: workPath
+        )
+    }
+    
+    /// Convert name.icns to name.iconset 
+    ///
+    /// ```
+    /// iconutil --convert iconset input.icns
+    /// ```
+    public static func iconutilIcnsToIconset(icnsFilename: String, workPath: String) {
+        guard icnsFilename.suffix(5) == ".icns" else {
+            print("ERROR: does not have extension `.icns` inputIcns = \(icnsFilename)")
+            return
+        }
+        print("inputIcns = \(icnsFilename)")
+        var args: [String] = []
+        args.append("--convert")
+        args.append("iconset")
+        args.append(icnsFilename)
         
         _ = McProcess.run(
             commandPath: McProcessPath.iconutil, 
@@ -93,13 +111,11 @@ public class McShell {
         )
     }
     
-    /** shell: mkdir
-     
-     ```
-     mkdir [-p] [-m mode] directory_name ...
-     ```
-     
-     */
+    /// shell: mkdir
+    /// 
+    /// ```
+    /// mkdir [-p] [-m mode] directory_name ...
+    /// ```
     public static func mkdir(dir: String, workPath: String) {
         // -p Create intermediate directories as required.
         // -m mode
@@ -113,13 +129,11 @@ public class McShell {
         )
     }
     
-    /** shell: open
-     
-     ```
-     open [-a application] [-b bundle_indentifier] [_MORE_] file ...
-     ```
-     
-     */
+    /// shell: open
+    /// 
+    /// ```
+    /// open [-a application] [-b bundle_indentifier] [_MORE_] file ...
+    /// ```
     public static func open(filePath: String, workPath: String? = nil) {
         
         var args: [String] = []

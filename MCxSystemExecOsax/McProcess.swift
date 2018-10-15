@@ -8,16 +8,15 @@
 
 import Foundation
 
-/**
- 
- ## Important:
- 
- `$HOME` and `~` must be fully expanded.
- 
- ## NYI:
- Add auto detection and expansion for `$HOME` and `~`.
- 
- */
+///
+/// 
+/// ## Important:
+/// 
+/// `$HOME` and `~` must be fully expanded.
+/// 
+/// ## NYI:
+/// Add auto detection and expansion for `$HOME` and `~`.
+/// 
 
 public class McProcess {
     

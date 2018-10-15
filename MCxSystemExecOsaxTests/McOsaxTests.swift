@@ -220,16 +220,15 @@ class McOsaxTests: XCTestCase {
         print("r=\(String(describing: r))")
     }
     
-    /*
-     Unicode text, 42, 
-     string, 21, 
-     styled Clipboard text, 22, 
-     «class utf8», 21, 
-     «class ut16», 44, 
-     styled Clipboard text, 22
-     
-     «class HTML», 389, TIFF picture, 5790166, «class 8BPS», 2975502, GIF picture, 322389, «class jp2 », 292180, JPEG picture, 263633, «class PNGf», 1161372, «class BMP », 5787654, «class TPIC», 1777773
-     */
+    ///
+    /// Unicode text, 42, 
+    /// string, 21, 
+    /// styled Clipboard text, 22, 
+    /// «class utf8», 21, 
+    /// «class ut16», 44, 
+    /// styled Clipboard text, 22
+    /// 
+    /// «class HTML», 389, TIFF picture, 5790166, «class 8BPS», 2975502, GIF picture, 322389, «class jp2 », 292180, JPEG picture, 263633, «class PNGf», 1161372, «class BMP », 5787654, «class TPIC», 1777773
     func testClipboard() {
         var info = McOsax.clipboardInfo()
         print("clipboard info = \(info)")

@@ -14,17 +14,15 @@ public enum McOsaxIcon {
     case stop
 }
 
-/** Uniform Type Identifiers (UTI)
- 
- **Notes:**
- 
- Apple text string intended to eliminate the ambiguities and problems associated with inferring a file's content from its MIME type, filename extension, or type or creator code. 
- 
- [Apple: Uniform Type Identifiers Overview](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/understanding_utis)
- 
- [Apple: System-Declared Uniform Type Identifiers](https://developer.apple.com/library/content/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html)
- 
- */
+/// Uniform Type Identifiers (UTI)
+/// 
+/// **Notes:**
+/// 
+/// Apple text string intended to eliminate the ambiguities and problems associated with inferring a file's content from its MIME type, filename extension, or type or creator code. 
+/// 
+/// [Apple: Uniform Type Identifiers Overview](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/understanding_utis)
+/// 
+/// [Apple: System-Declared Uniform Type Identifiers](https://developer.apple.com/library/content/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html)
 public enum McOsaxUTI: String {
     case html = "public.rtf"
     case rtf = "public.html"
@@ -32,9 +30,7 @@ public enum McOsaxUTI: String {
     case xml = "public.xml"
 }
 
-/**
- 
- */
+///
 public class McOsaxURL {
     
     public static let desktop: URL = FileManager.default
@@ -75,21 +71,19 @@ public class McOsax {
     // result: alias, alias list
     // try page 262 to handle user canceled
     
-    /**
-     
-     - Note: `cancel` returns "false". If "FALSE" is needed as a choice, then uppercase "FALSE" in the choice list to avoid user selection ambiguity.  Lowercase "false" will always return `nil`.
-     
-     - Note: Each choice must be fully unique. Do not have one choice be nested within another choice. For example, instead of "Jim" & "Jim Bean", use "A: Jim", "B:  Jim Bean"
-     
-     - parameter choices: `[String]`
-     - parameter defaults: [String]
-     - parameter title: String?
-     - parameter prompt: String?
-     - parameter okButtonName: String?
-     - parameter cancelButtonName: String?
-     - parameter allowMultipleSelections: Bool default: `false`
-     - parameter emptySelectionAllowed: Bool default: `false`
-     */
+    /// - Note: `cancel` returns "false". If "FALSE" is needed as a choice, then uppercase "FALSE" in the choice list to avoid user selection ambiguity.  Lowercase "false" will always return `nil`.
+    /// 
+    /// - Note: Each choice must be fully unique. Do not have one choice be nested within another choice. For example, instead of "Jim" & "Jim Bean", use "A: Jim", "B:  Jim Bean"
+    ///
+    /// - parameter choices: `[String]`
+    /// - parameter defaults: [String]
+    /// - parameter title: String?
+    /// - parameter prompt: String?
+    /// - parameter okButtonName: String?
+    /// - parameter cancelButtonName: String?
+    /// - parameter allowMultipleSelections: Bool default: `false`
+    /// - parameter emptySelectionAllowed: Bool default: `false`
+    ///
     public static func chooseFromList(
         choices: [String],
         defaults: [String],
@@ -152,11 +146,9 @@ public class McOsax {
         return selected
     }
     
-    /**
-     - parameter title: `String?` default: "Choose Application"
-     - parameter prompt: String? default: "Select an application:"
-     - parameter allowMultipleSelections: Bool default: `false`
-     */
+    /// - parameter title: `String?` default: "Choose Application"
+    /// - parameter prompt: String? default: "Select an application:"
+    /// - parameter allowMultipleSelections: Bool default: `false`
     public static func chooseApplication(
         title: String? = nil,
         prompt: String? = nil, 
@@ -206,14 +198,12 @@ public class McOsax {
         return urls
     }
     
-    /**
-     - parameter prompt: `String` optional default: none
-     - parameter ofType: `[McOsaxUTI.raw]` optional default: none
-     - parameter defaultFolderUrl: `URL` optional default: none
-     - parameter allowMultipleSelections: Bool default: `false`
-     - parameter showInvisibles: `Bool` default: false
-     - parameter showPackageContents: `Bool` default: false
-     */
+    /// - parameter prompt: `String` optional default: none
+    /// - parameter ofType: `[McOsaxUTI.raw]` optional default: none
+    /// - parameter defaultFolderUrl: `URL` optional default: none
+    /// - parameter allowMultipleSelections: Bool default: `false`
+    /// - parameter showInvisibles: `Bool` default: false
+    /// - parameter showPackageContents: `Bool` default: false
     public static func chooseFile(
         prompt: String? = nil,
         ofType: [String]? = nil,
@@ -280,11 +270,9 @@ public class McOsax {
         return urls
     }
     
-    /**
-     - parameter prompt: `String` e.g. "Save report as:" default: "Specify new file name and location"
-     - parameter defaultName: `String`  default: untitled
-     - parameter defaultFolderUrl: `URL?` 
-     */
+    /// - parameter prompt: `String` e.g. "Save report as:" default: "Specify new file name and location"
+    /// - parameter defaultName: `String`  default: untitled
+    /// - parameter defaultFolderUrl: `URL?` 
     public static func chooseFileName(
         prompt: String? = nil,
         defaultName: String? = nil,
@@ -331,13 +319,11 @@ public class McOsax {
         return url
     }
     
-    /**
-     - parameter prompt: `String`
-     - parameter defaultUrl: `URL`
-     - parameter allowMultipleSelections: `Bool` default: false
-     - parameter showInvisibles: `Bool` default: false
-     - parameter showPackageContents: `Bool` default: false
-     */
+    /// - parameter prompt: `String`
+    /// - parameter defaultUrl: `URL`
+    /// - parameter allowMultipleSelections: `Bool` default: false
+    /// - parameter showInvisibles: `Bool` default: false
+    /// - parameter showPackageContents: `Bool` default: false
     public static func chooseFolder(
         prompt: String? = nil,
         defaultFolderUrl: URL? = nil, 
@@ -393,11 +379,9 @@ public class McOsax {
         return urls
     }
     
-    /**
-     - parameter showing: `[String]` where "`Web servers`" shows `http` and `https` services. "`FTP Servers`" shows `ftp` services. "`Telnet hosts`" shows `telnet` services. "`File servers`" shows `afp`, `nfs`, and `smb` services. "`News servers`" shows `nntp` services. "`Directory services`" shows `ldap` services. "`Media servers`" shows `rtsp` services. "`Remote applications`" shows `eppc` services.
-     
-     - parameter editable: default: `true`. `false` restricts choices to bonjour listed services 
-     */
+    /// - parameter showing: `[String]` where "`Web servers`" shows `http` and `https` services. "`FTP Servers`" shows `ftp` services. "`Telnet hosts`" shows `telnet` services. "`File servers`" shows `afp`, `nfs`, and `smb` services. "`News servers`" shows `nntp` services. "`Directory services`" shows `ldap` services. "`Media servers`" shows `rtsp` services. "`Remote applications`" shows `eppc` services.
+    /// 
+    /// - parameter editable: default: `true`. `false` restricts choices to bonjour listed services 
     public static func chooseUrl(
         showing: [String]? = nil,
         editable: Bool = true
@@ -480,9 +464,7 @@ public class McOsax {
         _ = McProcess.runOsaScript(script: s)
     }
     
-    /**
-     - parameter seconds: time. e.g. 3.5 seconds
-     */
+    /// - parameter seconds: time. e.g. 3.5 seconds
     public static func delay(seconds: Float) {
         // `delay \(seconds)`   example: delay 3.5
         let s = "delay \(String(format: "%.2f", seconds)) "
@@ -493,15 +475,14 @@ public class McOsax {
     
     // MARK: - Display Alert, Dialog, Notification
     
-    /** Display Alert
-     - parameter message: `String`
-     - parameter title: `String?`
-     - parameter buttons: default "OK", "Cancel"
-     - parameter buttonDefault: default "OK"
-     - parameter buttonCancel: default "Cancel"
-     - parameter icon: `McOsaxIcon` caution, note or stop
-     - returns: button `String` or `nil` is user canceled
-     */
+    /// Display Alert
+    /// - parameter message: `String`
+    /// - parameter title: `String?`
+    /// - parameter buttons: default "OK", "Cancel"
+    /// - parameter buttonDefault: default "OK"
+    /// - parameter buttonCancel: default "Cancel"
+    /// - parameter icon: `McOsaxIcon` caution, note or stop
+    /// - returns: button `String` or `nil` is user canceled
     public static func displayAlert(
         message: String,
         submessage: String? = nil,
@@ -570,11 +551,10 @@ public class McOsax {
     }
     
     
-    /** Display Dialog
-     - parameter message: `String`  
-     - parameter title: `String?`  
-     - parameter answerDefault: `String` DEFAULT: "".  
-     */
+    /// Display Dialog
+    /// - parameter message: `String`  
+    /// - parameter title: `String?`  
+    /// - parameter answerDefault: `String` DEFAULT: "".  
     public static func displayDialogGetText(
         message: String,
         title: String? = nil,
@@ -593,17 +573,16 @@ public class McOsax {
         }
     }
     
-    /** Display Dialog
-     - parameter message: `String`  
-     - parameter title: `String?`  
-     - parameter answerDefault: `String?` NOTE: Answer box is hidden if no string provided. Can be an empty string "".  
-     - parameter answerIsHidden: `Bool` default false  
-     - parameter buttons: default "OK", "Cancel"  
-     - parameter buttonDefault: default "OK"  
-     - parameter buttonCancel: default "Cancel"  
-     - parameter icon: `McOsaxIcon` caution, note or stop  
-     - returns: (text: String, button: String) or `nil` is user canceled  
-     */
+    /// Display Dialog
+    /// - parameter message: `String`  
+    /// - parameter title: `String?`  
+    /// - parameter answerDefault: `String?` NOTE: Answer box is hidden if no string provided. Can be an empty string "".  
+    /// - parameter answerIsHidden: `Bool` default false  
+    /// - parameter buttons: default "OK", "Cancel"  
+    /// - parameter buttonDefault: default "OK"  
+    /// - parameter buttonCancel: default "Cancel"  
+    /// - parameter icon: `McOsaxIcon` caution, note or stop  
+    /// - returns: (text: String, button: String) or `nil` is user canceled  
     public static func displayDialog(
         message: String,
         title: String? = nil,
@@ -675,12 +654,10 @@ public class McOsax {
         return (returnText, returnButton)
     }
     
-    /**
-     - parameter message: `String`
-     - parameter title: `String`
-     - parameter subtitle: `String` optional
-     - parameter sound: `String` base name from Library/Sounds. e.g. Basso, Blow, Bottle, Frog, Funk, Glass, Hero, Morse, Ping, Pop, Purr, Sosumi, Submarine, Tink
-     */
+    /// - parameter message: `String`
+    /// - parameter title: `String`
+    /// - parameter subtitle: `String` optional
+    /// - parameter sound: `String` base name from Library/Sounds. e.g. Basso, Blow, Bottle, Frog, Funk, Glass, Hero, Morse, Ping, Pop, Purr, Sosumi, Submarine, Tink
     public static func displayNotification(
         message: String, 
         title: String,
@@ -706,11 +683,9 @@ public class McOsax {
         _ = McProcess.runOsaScript(script: s)
     }
     
-    /**
-     - parameter spokenText: String 
-     - parameter usingVoice: system voice. For example: Alex, Fred, Samantha, Victoria. Additional voices can be downloaded via System Preferences > Accessibility > Speech.  Such as Swedish: Alva, Klara, Oskar, English Novelty: Pipe Organ, Spanish/Mexico: Juan, Monica, Spanish/Spain: Jorge, Monica 
-     - parameter waitUntilCompletion: `Bool` default: true
-     */
+    /// - parameter spokenText: String 
+    /// - parameter usingVoice: system voice. For example: Alex, Fred, Samantha, Victoria. Additional voices can be downloaded via System Preferences > Accessibility > Speech.  Such as Swedish: Alva, Klara, Oskar, English Novelty: Pipe Organ, Spanish/Mexico: Juan, Monica, Spanish/Spain: Jorge, Monica 
+    /// - parameter waitUntilCompletion: `Bool` default: true
     public static func say(
         spokenText: String,
         usingVoice: String? = nil,
@@ -751,9 +726,7 @@ public class McOsax {
         return s
     }
     
-    /**
-     - returns: URL?
-     */
+    /// - returns: URL?
     private static func toUrl(posix: String, isDirectory: Bool = false) -> URL? {
         print("posix=\(posix)")
         let s = posix.replacingOccurrences(of: "\n", with: "", options: [.backwards, .anchored])
@@ -786,17 +759,18 @@ public class McOsax {
     
 }
 
-/***************************************************
- ******************** FOOTNOTES ********************
- ***************************************************
+////////////////////////////////////////////////////
+//////////////////// FOOTNOTES /////////////////////
+////////////////////////////////////////////////////
+///
+/// 1. `choose color` did not display a color chooser window. 
+/// 
+/// 2. `with timeout` AppleScript statement wrapper did NOT timeout for `choose application`
+/// 
+/// -- AppleScript default: 120 seconds (2 minutes)
+/// s.append("with timeout of 20 seconds\n")
+/// -- AppleScript statement here
+/// s.append("\nend timeout\n")
+///
+/////////////////////////////////////////////////////
  
- 1. `choose color` did not display a color chooser window. 
- 
- 2. `with timeout` AppleScript statement wrapper did NOT timeout for `choose application`
- 
- -- AppleScript default: 120 seconds (2 minutes)
- s.append("with timeout of 20 seconds\n")
- -- AppleScript statement here
- s.append("\nend timeout\n")
- 
- ***************************************************/
