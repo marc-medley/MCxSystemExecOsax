@@ -16,27 +16,40 @@ public class McProcessPath {
         .appendingPathComponent("opt", isDirectory: true)
         .appendingPathComponent("bin", isDirectory: true)
         .appendingPathComponent("cot")
-        .path
     
-    /// curl 
-    public static let curl = "/usr/bin/curl"
+    /// `cmark-gfm`
+    public static let cmark_gfm = URL(fileURLWithPath: "/usr/local/bin/cmark-gfm", isDirectory: false)
+
+    /// `curl`
+    public static let curl = URL(fileURLWithPath: "/usr/bin/curl", isDirectory: false)
+
+    /// `ffmpeg`
+    public static let ffmpeg = URL(fileURLWithPath: "/usr/local/bin/ffmpeg", isDirectory: false)
+
+    /// `ffprobe`
+    public static let ffprobe = URL(fileURLWithPath: "/usr/local/bin/ffprobe", isDirectory: false)
     
     /// GraphicsMagick `gm`
-    public static let gm = "/usr/local/bin/gm"
+    public static let gm = URL(fileURLWithPath: "/usr/local/bin/gm", isDirectory: false)
     
     /// `hoedown`
-    public static let hoedown = "/opt/hoedown/current/bin/hoedown"
+    public static let hoedown = URL(fileURLWithPath: "/opt/hoedown/current/bin/hoedown", isDirectory: false)
     
-    /// `iconutil` - convert between `.iconset` folder and `.icns` file
-    public static let iconutil = "/usr/bin/iconutil"
+    /// `iconutil` - convert between `.iconset` folder and `.icns` 
+    public static let iconutil = URL(fileURLWithPath: "/usr/bin/iconutil", isDirectory: false)
 
     /// Inkscape `inkscape`
     // NOTE: simple `inkscape` link will not find Inkscape's Resources
     // NOTE: brew cask (binary) install is a possible alternative.
-    public static let inkscape = "/Applications/Inkscape.app/Contents/Resources/bin/inkscape"
+    public static let inkscape = URL(
+        fileURLWithPath: "/Applications/Inkscape.app/Contents/Resources/bin/inkscape", 
+        isDirectory: false)
     
     /// `markdown` Discount
-    public static let markdown = "/opt/discount/current/bin/markdown"
+    public static let markdown = URL(fileURLWithPath: "/opt/discount/current/bin/markdown", isDirectory: false)
+    
+    /// `multimarkdown`
+    public static let multimarkdown = URL(fileURLWithPath: "/opt/discount/current/bin/multimarkdown", isDirectory: false)
     
     /// Meld `~/opt/bin/meld`
     public static let meld = FileManager.default
@@ -44,31 +57,33 @@ public class McProcessPath {
         .appendingPathComponent("opt", isDirectory: true)
         .appendingPathComponent("bin", isDirectory: true)
         .appendingPathComponent("meld")
-        .path
     
     /// `mkdir` 
-    public static let mkdir = "/bin/mkdir"
+    public static let mkdir = URL(fileURLWithPath: "/bin/mkdir", isDirectory: false)
 
     /// `open` 
-    public static let open = "/usr/bin/open"
+    public static let open = URL(fileURLWithPath: "/usr/bin/open", isDirectory: false)
 
     /// Open Scripting Architecture (OSA) `osascript`
-    public static let osascript = "/usr/bin/osascript"
+    public static let osascript = URL(fileURLWithPath: "/usr/bin/osascript", isDirectory: false)
     
-    /// pandoc
-    public static let pandoc = "/usr/local/bin/pandoc"
+    /// `pandoc`
+    public static let pandoc = URL(fileURLWithPath: "/usr/local/bin/pandoc", isDirectory: false)
     
-    // sips
-    public static let sips = "/usr/bin/sips"
+    // `sips`
+    public static let sips = URL(fileURLWithPath: "/usr/bin/sips", isDirectory: false)
     
     /// `ssh-add` 
-    public static let ssh_add = "/usr/bin/ssh-add"
+    public static let ssh_add = URL(fileURLWithPath: "/usr/bin/ssh-add", isDirectory: false)
+    
+    /// `tesseract` OCR
+    public static let tesseract = URL(fileURLWithPath: "/usr/local/bin/tesseract", isDirectory: false)
     
     /// `textutil` 
-    public static let textutil = "/usr/bin/textutil"
+    public static let textutil = URL(fileURLWithPath: "/usr/bin/textutil", isDirectory: false)
 
     /// `wget`
-    public static let wget = "/usr/local/bin/wget"
+    public static let wget = URL(fileURLWithPath: "/usr/local/bin/wget", isDirectory: false)
     
     public static let user_opt_dir = FileManager.default
         .homeDirectoryForCurrentUser

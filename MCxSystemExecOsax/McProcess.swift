@@ -20,16 +20,18 @@ import Foundation
 
 public class McProcess {
     
-    public static func run(commandPath: String, 
+    public static func run(executableURL: URL, 
                            withArguments: [String]? = nil, 
-                           workDirectory: String? = nil) -> (stdout: String, stderr: String) {
+                           currentDirectory: URL? = nil,
+                           printStdio: Bool = false) -> (stdout: String, stderr: String) {
+        // https://developer.apple.com/documentation/foundation/process
         let process = Process()
-        process.launchPath = commandPath
+        process.executableURL = executableURL
         if let args = withArguments {
             process.arguments = args
         }
-        if let wd = workDirectory {
-            process.currentDirectoryPath = wd
+        if let currentDirectory = currentDirectory {
+            process.currentDirectoryURL = currentDirectory
         }
         
         let pipeOutput = Pipe()
@@ -43,24 +45,30 @@ public class McProcess {
         
         let data = pipeOutput.fileHandleForReading.readDataToEndOfFile()
         if let output = String(data: data, encoding: String.Encoding.utf8) {
+            if printStdio {
             print("STANDARD OUTPUT\n" + output)
+            }
             stdoutStr.append(output)
         }
         
         let dataError = pipeError.fileHandleForReading.readDataToEndOfFile()
         if let outputError = String(data: dataError, encoding: String.Encoding.utf8) {
+            if printStdio {
             print("STANDARD ERROR \n" + outputError)
+            }
             stderrStr.append(outputError)
         }
         
         process.waitUntilExit()
+        if printStdio {
         let status = process.terminationStatus
         print("STATUS: \(status)")
+        }
         
         return (stdoutStr, stderrStr)
     }
     
-    public static func runOsaScript(script: String, removeTrailingNewline: Bool = false, useJXA: Bool = false) -> (stdout: String, stderr: String) {
+    public static func runOsaScript(script: String, removeTrailingNewline: Bool = false, useJXA: Bool = false, printStdio: Bool = false) -> (stdout: String, stderr: String) {
         var args = [String]()
         if useJXA {
             args.append(contentsOf: ["-l","JavaScript"])
@@ -73,7 +81,7 @@ public class McProcess {
         
         //Process.launchedProcess(launchPath: "/usr/bin/osascript", arguments: args)
         let process = Process()
-        process.launchPath = "/usr/bin/osascript"
+        process.executableURL = URL(fileURLWithPath: "/usr/bin/osascript", isDirectory: false)
         process.arguments = args
         
         let pipeOutput = Pipe()
@@ -87,19 +95,25 @@ public class McProcess {
         
         let data = pipeOutput.fileHandleForReading.readDataToEndOfFile()
         if let output = String(data: data, encoding: String.Encoding.utf8) {
-            //print("STANDARD OUTPUT\n" + output)
+            if printStdio {
+                print("STANDARD OUTPUT\n" + output)
+            }
             stdoutStr.append(output)
         }
         
         let dataError = pipeError.fileHandleForReading.readDataToEndOfFile()
         if let outputError = String(data: dataError, encoding: String.Encoding.utf8) {
-            //print("STANDARD ERROR \n" + outputError)
+            if printStdio {
+                print("STANDARD ERROR \n" + outputError)
+            }
             stderrStr.append(outputError)
         }
         
         process.waitUntilExit()
-        //let status = process.terminationStatus
-        //print("STATUS: \(status)")
+        if printStdio {
+            let status = process.terminationStatus
+            print("STATUS: \(status)")
+        }
         
         // osascript adds extra \n
         if removeTrailingNewline {
