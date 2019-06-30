@@ -38,7 +38,8 @@ public class McProcess {
         process.standardOutput = pipeOutput
         let pipeError = Pipe()
         process.standardError = pipeError
-        process.launch()
+        do {
+            try process.run()
         
         var stdoutStr = "" // do not mask foundation stdout
         var stderrStr = "" // do not mask foundation stderr
@@ -66,6 +67,10 @@ public class McProcess {
         }
         
         return (stdoutStr, stderrStr)
+        } catch {
+            let error = "FAILED: \(error)"
+            return ("", error)
+        }
     }
     
     public static func runOsaScript(script: String, removeTrailingNewline: Bool = false, useJXA: Bool = false, printStdio: Bool = false) -> (stdout: String, stderr: String) {
@@ -88,7 +93,8 @@ public class McProcess {
         process.standardOutput = pipeOutput
         let pipeError = Pipe()
         process.standardError = pipeError
-        process.launch()
+        do {
+            try process.run()
         
         var stdoutStr = "" // do not mask foundation stdout
         var stderrStr = "" // do not mask foundation stderr
@@ -121,6 +127,10 @@ public class McProcess {
         }
         
         return (stdoutStr, stderrStr)
+        } catch {
+            let error = "FAILED: \(error)"
+            return ("", error)
+        }
     }
     
 }
