@@ -25,7 +25,7 @@ public class McShell {
         args.append(toPath)
         
         _ = McProcess.run(
-            executableURL: McProcessPath.gm, 
+            executableUrl: McProcessPath.gm, 
             withArguments: args, 
             currentDirectory: workUrl
         )
@@ -44,7 +44,7 @@ public class McShell {
         args.append(iconsetFolder)
         
         _ = McProcess.run(
-            executableURL: McProcessPath.iconutil, 
+            executableUrl: McProcessPath.iconutil, 
             withArguments: args, 
             currentDirectory: workUrl
         )
@@ -67,7 +67,7 @@ public class McShell {
         args.append(icnsFilename)
         
         _ = McProcess.run(
-            executableURL: McProcessPath.iconutil, 
+            executableUrl: McProcessPath.iconutil, 
             withArguments: args, 
             currentDirectory: workUrl
         )
@@ -105,7 +105,7 @@ public class McShell {
         args.append(fromPath)
         
         _ = McProcess.run(
-            executableURL: McProcessPath.inkscape, 
+            executableUrl: McProcessPath.inkscape, 
             withArguments: args, 
             currentDirectory: workUrl
         )
@@ -123,7 +123,7 @@ public class McShell {
         args.append(dir)
         
         _ = McProcess.run(
-            executableURL: McProcessPath.mkdir, 
+            executableUrl: McProcessPath.mkdir, 
             withArguments: args, 
             currentDirectory: workUrl
         )
@@ -140,7 +140,7 @@ public class McShell {
         args.append(filePath)
         
         _ = McProcess.run(
-            executableURL: McProcessPath.open, 
+            executableUrl: McProcessPath.open, 
             withArguments: args, 
             currentDirectory: workUrl
         )

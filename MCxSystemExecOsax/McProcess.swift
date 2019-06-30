@@ -20,13 +20,13 @@ import Foundation
 
 public class McProcess {
     
-    public static func run(executableURL: URL, 
+    public static func run(executableUrl: URL, 
                            withArguments: [String]? = nil, 
                            currentDirectory: URL? = nil,
                            printStdio: Bool = false) -> (stdout: String, stderr: String) {
         // https://developer.apple.com/documentation/foundation/process
         let process = Process()
-        process.executableURL = executableURL
+        process.executableURL = executableUrl
         if let args = withArguments {
             process.arguments = args
         }
