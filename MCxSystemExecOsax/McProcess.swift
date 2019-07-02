@@ -68,8 +68,8 @@ public class McProcess {
         
         return (stdoutStr, stderrStr)
         } catch {
-            let error = "FAILED: \(error)"
-            return ("", error)
+            let errorStr = "FAILED: \(error)"
+            return ("", errorStr)
         }
     }
     
@@ -128,8 +128,8 @@ public class McProcess {
         
         return (stdoutStr, stderrStr)
         } catch {
-            let error = "FAILED: \(error)"
-            return ("", error)
+            let errorStr = "FAILED: \(error)"
+            return ("", errorStr)
         }
     }
     
