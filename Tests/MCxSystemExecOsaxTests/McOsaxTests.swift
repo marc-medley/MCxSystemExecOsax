@@ -330,4 +330,10 @@ class McOsaxTests: XCTestCase {
         }
     }
     
+    static var allTests = [
+        // :!!!:NYI: add remain tests
+        ("testSay", testSay),
+        ("testPerformanceExample", testPerformanceExample),
+    ]
+    
 }

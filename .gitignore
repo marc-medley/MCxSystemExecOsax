@@ -1,14 +1,7 @@
-### see: https://github.com/github/gitignore  # example templates
-
-### cd _REPOSITORY_DIRECTORY_
-### cp $HOME/.gitignore_global .
-
-## Lines that start with '##' are comments.
-## For a project mostly in C, the following would be a good set of
-## exclude patterns (uncomment them if you want to use them):
-# *.[oa]
-# *~
-*~
+###################################
+### Local Items: Not Checked In ###
+###################################
+*__LOCAL
 
 ###############
 ## Apple OSX ##
@@ -16,175 +9,27 @@
 # see Icon as end of this file
 .DS_Store
 
-#################
-## Apple Xcode ##
-#################
-project.xcworkspace/
-xcuserdata
+###################
+### Apple macOS ###
+###################
+.DS_Store
 
-## Build generated
-build/
-DerivedData/
-
-## Various settings
-*.pbxuser
-!default.pbxuser
-*.mode1v3
-!default.mode1v3
-*.mode2v3
-!default.mode2v3
-*.perspectivev3
-!default.perspectivev3
-xcuserdata
-
-## Other
-*.xccheckout
-*.moved-aside
-*.xcuserstate
-*.xcscmblueprint
-
-## Obj-C/Swift specific
-*.hmap
-*.ipa
-*.dSYM.zip
-*.dSYM
-
-## Playgrounds
-timeline.xctimeline
-playground.xcworkspace
-
-## Swift Package Manager
-##
-## Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
-# Packages/
-# .build/
-
-### Based on https://www.gitignore.io/api/vapor
-### Swift Package Manager: Vapor ###
-Config/secrets
-
-### Swift Package Manager: Vapor Patch ###
-Packages/
-.build/
-xcuserdata
-#*.xcodeproj
-DerivedData/
-
-###########
-## C/C++ ##
-###########
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.ko
-*.obj
-*.elf
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.dll
-*.dylib
-*.so
-*.so.*
-
-# Fortran module files
-*.mod
-
-# Compiled Static libraries
-*.lib
-*.a
-*.la
-*.lai
-*.lo
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-
-#################
-## LibreOffice ##
-#################
-.~lock*
-
-########
-## Qt ##
-########
-# C++ objects and libs
-
-*.slo
-*.lo
-*.o
-*.a
-*.la
-*.lai
-*.so
-*.dll
-*.dylib
-
-# Qt-es
-
-/.qmake.cache
-/.qmake.stash
-*.pro.user
-*.pro.user.*
-*.qbs.user
-*.qbs.user.*
-*.moc
-moc_*.cpp
-qrc_*.cpp
-ui_*.h
-Makefile*
-*build-*
-
-# QtCreator
-
-*.autosave
-
-#QtCtreator Qml
-*.qmlproject.user
-*.qmlproject.user.*
-
-###########
-## VAPOR ##
-###########
-
-### Vapor ###
-#Config/secrets
-
-### Vapor Patch ###
-#Packages/
-#.build
-#xcuserdata
-#*.xcodeproj
-#DerivedData/
-#.DS_Store
-
-###########
-## Hidden SourceTree "Iconr" which is really "Icon\r"
-## or add 0a 49 63 6e 6e 0d 0d 0a in binhex editor.  The extra 0a brackets the 'Icon\r\r' 
-## :FAIL:
-# Icon[.]
-# Icon[\x0a]
-# Icon\x0A
-# Icon[\r]
-# Icon\r
-# *\x0a
-## :NOT_TRIED:
-# Icon[\x0d]
-# Icon\x0D
-## :PASS:
-# Icon*
-# Icon?
+### SourceTree "Iconr" has a carriage return aka "Icon\r" or "Icon\x0d"
+### find . -name Icon$'\u000d' -print
+### case sensitive, single character wildcard
 Icon?
 
+#############################
+### Swift Package Manager ###
+#############################
+/.build
+/Packages
+/*.xcodeproj
+xcuserdata/
+DerivedData/
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+
+###################
+### LibreOffice ###
+###################
+.~lock*

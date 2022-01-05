@@ -40,33 +40,33 @@ public class McProcess {
         process.standardError = pipeError
         do {
             try process.run()
-        
-        var stdoutStr = "" // do not mask foundation stdout
-        var stderrStr = "" // do not mask foundation stderr
-        
-        let data = pipeOutput.fileHandleForReading.readDataToEndOfFile()
-        if let output = String(data: data, encoding: String.Encoding.utf8) {
-            if printStdio {
-            print("STANDARD OUTPUT\n" + output)
+            
+            var stdoutStr = "" // do not mask foundation stdout
+            var stderrStr = "" // do not mask foundation stderr
+            
+            let data = pipeOutput.fileHandleForReading.readDataToEndOfFile()
+            if let output = String(data: data, encoding: String.Encoding.utf8) {
+                if printStdio {
+                    print("STANDARD OUTPUT\n" + output)
+                }
+                stdoutStr.append(output)
             }
-            stdoutStr.append(output)
-        }
-        
-        let dataError = pipeError.fileHandleForReading.readDataToEndOfFile()
-        if let outputError = String(data: dataError, encoding: String.Encoding.utf8) {
-            if printStdio {
-            print("STANDARD ERROR \n" + outputError)
+            
+            let dataError = pipeError.fileHandleForReading.readDataToEndOfFile()
+            if let outputError = String(data: dataError, encoding: String.Encoding.utf8) {
+                if printStdio {
+                    print("STANDARD ERROR \n" + outputError)
+                }
+                stderrStr.append(outputError)
             }
-            stderrStr.append(outputError)
-        }
-        
-        process.waitUntilExit()
-        if printStdio {
-        let status = process.terminationStatus
-        print("STATUS: \(status)")
-        }
-        
-        return (stdoutStr, stderrStr)
+            
+            process.waitUntilExit()
+            if printStdio {
+                let status = process.terminationStatus
+                print("STATUS: \(status)")
+            }
+            
+            return (stdoutStr, stderrStr)
         } catch {
             let errorStr = "FAILED: \(error)"
             return ("", errorStr)
@@ -95,38 +95,38 @@ public class McProcess {
         process.standardError = pipeError
         do {
             try process.run()
-        
-        var stdoutStr = "" // do not mask foundation stdout
-        var stderrStr = "" // do not mask foundation stderr
-        
-        let data = pipeOutput.fileHandleForReading.readDataToEndOfFile()
-        if let output = String(data: data, encoding: String.Encoding.utf8) {
-            if printStdio {
-                print("STANDARD OUTPUT\n" + output)
+            
+            var stdoutStr = "" // do not mask foundation stdout
+            var stderrStr = "" // do not mask foundation stderr
+            
+            let data = pipeOutput.fileHandleForReading.readDataToEndOfFile()
+            if let output = String(data: data, encoding: String.Encoding.utf8) {
+                if printStdio {
+                    print("STANDARD OUTPUT\n" + output)
+                }
+                stdoutStr.append(output)
             }
-            stdoutStr.append(output)
-        }
-        
-        let dataError = pipeError.fileHandleForReading.readDataToEndOfFile()
-        if let outputError = String(data: dataError, encoding: String.Encoding.utf8) {
-            if printStdio {
-                print("STANDARD ERROR \n" + outputError)
+            
+            let dataError = pipeError.fileHandleForReading.readDataToEndOfFile()
+            if let outputError = String(data: dataError, encoding: String.Encoding.utf8) {
+                if printStdio {
+                    print("STANDARD ERROR \n" + outputError)
+                }
+                stderrStr.append(outputError)
             }
-            stderrStr.append(outputError)
-        }
-        
-        process.waitUntilExit()
-        if printStdio {
-            let status = process.terminationStatus
-            print("STATUS: \(status)")
-        }
-        
-        // osascript adds extra \n
-        if removeTrailingNewline {
-            stdoutStr = stdoutStr.replacingOccurrences(of: "\\n$", with: "", options: .regularExpression)
-        }
-        
-        return (stdoutStr, stderrStr)
+            
+            process.waitUntilExit()
+            if printStdio {
+                let status = process.terminationStatus
+                print("STATUS: \(status)")
+            }
+            
+            // osascript adds extra \n
+            if removeTrailingNewline {
+                stdoutStr = stdoutStr.replacingOccurrences(of: "\\n$", with: "", options: .regularExpression)
+            }
+            
+            return (stdoutStr, stderrStr)
         } catch {
             let errorStr = "FAILED: \(error)"
             return ("", errorStr)

@@ -9,14 +9,10 @@
 import Foundation
 
 public class McProcessPath {
-    
-    /// CotEditor `~/opt/bin/cot`
-    public static let cot = FileManager.default
-        .homeDirectoryForCurrentUser
-        .appendingPathComponent("opt", isDirectory: true)
-        .appendingPathComponent("bin", isDirectory: true)
-        .appendingPathComponent("cot")
-    
+        
+    /// `cot` CotEditor `/usr/local/bin/cot`
+    public static let cot = URL(fileURLWithPath: "/usr/local/bin/cot", isDirectory: false)
+
     /// `cmark-gfm`
     public static let cmark_gfm = URL(fileURLWithPath: "/usr/local/bin/cmark-gfm", isDirectory: false)
 
@@ -28,7 +24,7 @@ public class McProcessPath {
 
     /// `ffprobe`
     public static let ffprobe = URL(fileURLWithPath: "/usr/local/bin/ffprobe", isDirectory: false)
-    
+
     /// GraphicsMagick `gm`
     public static let gm = URL(fileURLWithPath: "/usr/local/bin/gm", isDirectory: false)
     
@@ -40,9 +36,8 @@ public class McProcessPath {
 
     /// Inkscape `inkscape`
     // NOTE: simple `inkscape` link will not find Inkscape's Resources
-    // NOTE: brew cask (binary) install is a possible alternative.
     public static let inkscape = URL(
-        fileURLWithPath: "/Applications/Inkscape.app/Contents/Resources/bin/inkscape", 
+        fileURLWithPath: "/Applications/Inkscape.app/Contents/MacOS/inkscape", 
         isDirectory: false)
     
     /// `markdown` Discount
@@ -50,7 +45,7 @@ public class McProcessPath {
     
     /// `multimarkdown`
     public static let multimarkdown = URL(fileURLWithPath: "/opt/discount/current/bin/multimarkdown", isDirectory: false)
-    
+
     /// Meld `~/opt/bin/meld`
     public static let meld = FileManager.default
         .homeDirectoryForCurrentUser

@@ -7,11 +7,11 @@
 
 ## Background <a id="Background"></a>[▴](#toc)
 
-Apple provides a set of common user interactions (e.g. dialogs and alerts) in the [Open Scripting Architecture eXtensions (OSAX)](https://en.wikipedia.org/wiki/AppleScript#Open_Scripting_Architecture).  Swift can call OSAX routines using `Process()` with the `executableURL` set to "/usr/bin/osascript". 
+Apple provides a set of common user interactions (e.g. dialogs and alerts) in the [Open Scripting Architecture eXtensions (OSAX)](https://en.wikipedia.org/wiki/AppleScript#Open_Scripting_Architecture).  Swift can call OSAX routines using `Process()` with the `launchPath` set to "/usr/bin/osascript". 
 
 ``` swift
 let process = Process()
-process.executableURL = URL(fileURLWithPath: "/usr/bin/osascript", isDirectory: false)
+process.launchPath = "/usr/bin/osascript"
 process.arguments = args // Applescript
 // ... more code here ...
 ```
