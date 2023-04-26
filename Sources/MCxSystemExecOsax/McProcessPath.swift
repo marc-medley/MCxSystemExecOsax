@@ -8,80 +8,134 @@
 
 import Foundation
 
+public enum McProcessPathError: Error {
+    case brewNotFound
+    case notInstalled
+    case unknown
+}
+
 public class McProcessPath {
+    
+    public static let cmd = McProcessPath()
+    //
+    private let _fm = FileManager.default
+    
+    // /opt/homebrew // Apple M1
+    // /usr/local    // Intel
+    private var _brewBasePath: String?
+    
+    public init() {
+        if _fm.fileExists(atPath: "/opt/homebrew/bin/brew") {
+            // Apple M1 processor
+            _brewBasePath = "/opt/homebrew"
+        } else if _fm.fileExists(atPath: "/usr/local/bin/brew") {
+            // Intel processor
+            _brewBasePath = "/usr/local"
+        } else {
+            _brewBasePath = nil           
+        }
+    }
+    
+    public func url(name: String) throws -> URL {
+        var path: String?
         
-    /// `cot` CotEditor `/usr/local/bin/cot`
-    public static let cot = URL(fileURLWithPath: "/usr/local/bin/cot", isDirectory: false)
-
-    /// `cmark-gfm`
-    public static let cmark_gfm = URL(fileURLWithPath: "/usr/local/bin/cmark-gfm", isDirectory: false)
-
-    /// `curl`
-    public static let curl = URL(fileURLWithPath: "/usr/bin/curl", isDirectory: false)
-
-    /// `ffmpeg`
-    public static let ffmpeg = URL(fileURLWithPath: "/usr/local/bin/ffmpeg", isDirectory: false)
-
-    /// `ffprobe`
-    public static let ffprobe = URL(fileURLWithPath: "/usr/local/bin/ffprobe", isDirectory: false)
-
-    /// GraphicsMagick `gm`
-    public static let gm = URL(fileURLWithPath: "/usr/local/bin/gm", isDirectory: false)
+        guard let brewBasePath = _brewBasePath else {
+            throw McProcessPathError.brewNotFound
+        }
+        
+        if _isHomebrew(name: name) {
+            path = "\(brewBasePath)/bin/\(name)"
+        } else {
+            switch name {
+            case "cot": // CotEditor
+                path = "/usr/local/bin/cot"
+            case "curl": 
+                path = "/usr/bin/curl"
+            case "file": 
+                path = "/usr/bin/file"
+            case "find": 
+                path = "/usr/bin/find"
+            case "iconutil": // - convert between `.iconset` folder and `.icns` 
+                path = "/usr/bin/iconutil"
+            case "inkscape": // Inkscape 
+                // NOTE: simple `inkscape` link will not find Inkscape's Resources
+                path = "/Applications/Inkscape.app/Contents/MacOS/inkscape"
+            case "join.py": // Automator Python script combines PDF files
+                path = "/System/Library/Automator/Combine PDF Pages.action/Contents/Resources/join.py"
+            case "~/opt/bin/meld": // Meld
+                let meld = FileManager.default
+                    .homeDirectoryForCurrentUser
+                    .appendingPathComponent("opt", isDirectory: true)
+                    .appendingPathComponent("bin", isDirectory: true)
+                    .appendingPathComponent("meld")
+                path = meld.path
+            case "mkdir":
+                path = "/bin/mkdir"
+            case "open":
+                path = "/usr/bin/open"
+            case "osascript": // Open Scripting Architecture (OSA) 
+                path = "/usr/bin/osascript"
+            case "sips":
+                path = "/usr/bin/sips"
+            case "ssh-add":
+                path = "/usr/bin/ssh-add"
+            case "textutil":
+                path = "/usr/bin/textutil"
+                let user_opt_dir = FileManager.default
+                    .homeDirectoryForCurrentUser
+                    .appendingPathComponent("opt", isDirectory: true)
+                path = user_opt_dir.path
+            default:
+                break
+            }            
+        }
+        
+        if let path = path {
+            if _fm.fileExists(atPath: path) {
+                return URL(fileURLWithPath: path, isDirectory: false)
+            } else {
+                print(":NYI: McProcessPath `\(name)` not install at `\(path)`")
+                throw McProcessPathError.notInstalled
+            }
+        }
+        
+        print(":NYI: McProcessPath has not yet implemented name: `\(name)`")
+        throw McProcessPathError.unknown
+    }
     
-    /// `hoedown`
-    public static let hoedown = URL(fileURLWithPath: "/opt/hoedown/current/bin/hoedown", isDirectory: false)
-    
-    /// `iconutil` - convert between `.iconset` folder and `.icns` 
-    public static let iconutil = URL(fileURLWithPath: "/usr/bin/iconutil", isDirectory: false)
-
-    /// Inkscape `inkscape`
-    // NOTE: simple `inkscape` link will not find Inkscape's Resources
-    public static let inkscape = URL(
-        fileURLWithPath: "/Applications/Inkscape.app/Contents/MacOS/inkscape", 
-        isDirectory: false)
-    
-    /// `markdown` Discount
-    public static let markdown = URL(fileURLWithPath: "/opt/discount/current/bin/markdown", isDirectory: false)
-    
-    /// `multimarkdown`
-    public static let multimarkdown = URL(fileURLWithPath: "/opt/discount/current/bin/multimarkdown", isDirectory: false)
-
-    /// Meld `~/opt/bin/meld`
-    public static let meld = FileManager.default
-        .homeDirectoryForCurrentUser
-        .appendingPathComponent("opt", isDirectory: true)
-        .appendingPathComponent("bin", isDirectory: true)
-        .appendingPathComponent("meld")
-    
-    /// `mkdir` 
-    public static let mkdir = URL(fileURLWithPath: "/bin/mkdir", isDirectory: false)
-
-    /// `open` 
-    public static let open = URL(fileURLWithPath: "/usr/bin/open", isDirectory: false)
-
-    /// Open Scripting Architecture (OSA) `osascript`
-    public static let osascript = URL(fileURLWithPath: "/usr/bin/osascript", isDirectory: false)
-    
-    /// `pandoc`
-    public static let pandoc = URL(fileURLWithPath: "/usr/local/bin/pandoc", isDirectory: false)
-    
-    // `sips`
-    public static let sips = URL(fileURLWithPath: "/usr/bin/sips", isDirectory: false)
-    
-    /// `ssh-add` 
-    public static let ssh_add = URL(fileURLWithPath: "/usr/bin/ssh-add", isDirectory: false)
-    
-    /// `tesseract` OCR
-    public static let tesseract = URL(fileURLWithPath: "/usr/local/bin/tesseract", isDirectory: false)
-    
-    /// `textutil` 
-    public static let textutil = URL(fileURLWithPath: "/usr/bin/textutil", isDirectory: false)
-
-    /// `wget`
-    public static let wget = URL(fileURLWithPath: "/usr/local/bin/wget", isDirectory: false)
-    
-    public static let user_opt_dir = FileManager.default
-        .homeDirectoryForCurrentUser
-        .appendingPathComponent("opt", isDirectory: true)
-    
+    private func _isHomebrew(name: String) -> Bool {
+        switch name {
+        case 
+            "cmark-gfm",
+            "ffmpeg",      // FFmpeg
+            "ffprobe",     // FFmpeg
+            "gm",          // GraphicsMagick
+            "gs",          // Ghostscript: more tools /…/Cellar/ghostscript/*/bin
+            "hoedown",
+            "identify",    // also man ImageMagick
+            "magick",      // also man ImageMagick
+            "markdown",    // Discount
+            "mogrify",     // also man ImageMagick
+            "multimarkdown",
+            "pandoc",
+            "pdfattach",   // Poppler
+            "pdfdetach",   // Poppler
+            "pdffonts",    // Poppler
+            "pdfimages",   // Poppler
+            "pdfinfo",     // Poppler
+            "pdfseparate", // Poppler
+            "pdfsig",      // Poppler
+            "pdftocairo",  // Poppler
+            "pdftohtml",   // Poppler
+            "pdftoppm",    // Poppler
+            "pdftops",     // Poppler
+            "pdftotext",   // Poppler
+            "pdfunite",    // Poppler
+            "tesseract",   // OCR
+            "wget":
+            return true
+        default:
+            return false
+        }
+    }
 }

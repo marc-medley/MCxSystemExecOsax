@@ -10,13 +10,12 @@ import Foundation
 
 public class McShell {
     
-    
     /// shell: Graphics Magic convert resize
     /// 
     /// ```
     /// gm convert $ICON_SOURCE_IMAGE -resize 16x16     $ICON_NAME.iconset/icon_16x16.png
     /// ```
-    public static func gmConvertResize(fromPath: String, toPath: String, wxh: String, workUrl: URL) {
+    public static func gmConvertResize(fromPath: String, toPath: String, wxh: String, workUrl: URL) throws {
         var args: [String] = []
         args.append("convert")
         args.append(fromPath)
@@ -24,8 +23,9 @@ public class McShell {
         args.append(wxh)
         args.append(toPath)
         
+        let cmdUrl = try McProcessPath.cmd.url(name: "gm")
         _ = McProcess.run(
-            executableUrl: McProcessPath.gm, 
+            executableUrl: cmdUrl, 
             withArguments: args, 
             currentDirectory: workUrl
         )
@@ -36,15 +36,16 @@ public class McShell {
     /// ```
     /// iconutil --convert icns input_folder.iconset
     /// ```
-    public static func iconutilIconsetToIcns(iconsetFolder: String, workUrl: URL) {
+    public static func iconutilIconsetToIcns(iconsetFolder: String, workUrl: URL) throws {
         print("iconsetFolder = \(iconsetFolder)")
         var args: [String] = []
         args.append("--convert")
         args.append("icns")
         args.append(iconsetFolder)
         
+        let cmdUrl = try McProcessPath.cmd.url(name: "iconutil")
         _ = McProcess.run(
-            executableUrl: McProcessPath.iconutil, 
+            executableUrl: cmdUrl, 
             withArguments: args, 
             currentDirectory: workUrl
         )
@@ -55,7 +56,7 @@ public class McShell {
     /// ```
     /// iconutil --convert iconset input.icns
     /// ```
-    public static func iconutilIcnsToIconset(icnsFilename: String, workUrl: URL) {
+    public static func iconutilIcnsToIconset(icnsFilename: String, workUrl: URL) throws {
         guard icnsFilename.suffix(5) == ".icns" else {
             print("ERROR: does not have extension `.icns` inputIcns = \(icnsFilename)")
             return
@@ -66,8 +67,9 @@ public class McShell {
         args.append("iconset")
         args.append(icnsFilename)
         
+        let cmdUrl = try McProcessPath.cmd.url(name: "iconutil")
         _ = McProcess.run(
-            executableUrl: McProcessPath.iconutil, 
+            executableUrl: cmdUrl, 
             withArguments: args, 
             currentDirectory: workUrl
         )
@@ -89,7 +91,7 @@ public class McShell {
     ///     - backgroundOpacity: range 0.0 to 1.0. Default is 0.005 to preserve canvas size. 0.0 contracts to image size.
     ///     - workPath: current working directory
     ///
-    public static func inkscapeSvgPng(fromPath: String, toPath: String, h: Int, w: Int, backgroundOpacity: Float = 0.005, workUrl: URL) {
+    public static func inkscapeSvgPng(fromPath: String, toPath: String, h: Int, w: Int, backgroundOpacity: Float = 0.005, workUrl: URL) throws {
         //print("--export-height=\(h)")
         //print("--export-width=\(w)")
         //print("--export-png='\(toPath)'")
@@ -104,8 +106,9 @@ public class McShell {
         args.append(contentsOf: ["--export-png=\(toPath)"])
         args.append(fromPath)
         
+        let cmdUrl = try McProcessPath.cmd.url(name: "inkscape")
         _ = McProcess.run(
-            executableUrl: McProcessPath.inkscape, 
+            executableUrl: cmdUrl, 
             withArguments: args, 
             currentDirectory: workUrl
         )
@@ -116,14 +119,15 @@ public class McShell {
     /// ```
     /// mkdir [-p] [-m mode] directory_name ...
     /// ```
-    public static func mkdir(dir: String, workUrl: URL) {
+    public static func mkdir(dir: String, workUrl: URL) throws {
         // -p Create intermediate directories as required.
         // -m mode
         var args: [String] = []
         args.append(dir)
         
+        let cmdUrl = try McProcessPath.cmd.url(name: "mkdir")
         _ = McProcess.run(
-            executableUrl: McProcessPath.mkdir, 
+            executableUrl: cmdUrl, 
             withArguments: args, 
             currentDirectory: workUrl
         )
@@ -134,17 +138,16 @@ public class McShell {
     /// ```
     /// open [-a application] [-b bundle_indentifier] [_MORE_] file ...
     /// ```
-    public static func open(filePath: String, workUrl: URL? = nil) {
-        
+    public static func open(filePath: String, workUrl: URL? = nil) throws {
         var args: [String] = []
         args.append(filePath)
         
+        let cmdUrl = try McProcessPath.cmd.url(name: "open")
         _ = McProcess.run(
-            executableUrl: McProcessPath.open, 
+            executableUrl: cmdUrl, 
             withArguments: args, 
             currentDirectory: workUrl
         )
     }
-    
     
 }

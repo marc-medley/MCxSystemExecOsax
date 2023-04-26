@@ -14,6 +14,9 @@ import Foundation
 /// 
 /// `$HOME` and `~` must be fully expanded.
 /// 
+/// * `which` finds binary executables reachable via `PATH`
+/// * `whereis` binary, sources and `man` files for an executable
+/// 
 /// ## NYI:
 /// Add auto detection and expansion for `$HOME` and `~`.
 /// 

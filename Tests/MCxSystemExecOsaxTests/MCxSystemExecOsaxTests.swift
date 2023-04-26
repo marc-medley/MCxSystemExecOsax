@@ -21,6 +21,63 @@ class MCxSystemExecOsaxTests: XCTestCase {
         super.tearDown()
     }
     
+    func testBrewInstall() {
+        // /opt/homebrew/bin/brew
+        // /usr/local/bin/brew
+        
+        let fm = FileManager.default
+        let isInUsrLocal = fm.fileExists(atPath: "/usr/local/bin/brew")
+        print("homebrew '/usr/local/bin/brew' isInUsrLocal: \(isInUsrLocal)")
+
+        let isInOptHomebrew = fm.fileExists(atPath: "/opt/homebrew/bin/brew")
+        print("homebrew '/opt/homebrew/bin/brew' isInOptHomebrew: \(isInOptHomebrew)")
+    }
+
+    func testFindMachineInfo() {
+        var args: [String] = []
+        
+        // :NOPE: returns empty string
+        //let cmd = "/usr/bin/which"
+        //args.append("pandoc")
+        
+        // :NOPE: returns empty string
+        //let cmd = "/usr/bin/whereis"
+        //args.append("-b") // search for binaries
+        //args.append("-q") // "quiet" suppresses extra labels
+        //args.append("pandoc")
+        
+        // :NOPE: slow. way to much text returned
+        //let cmd = "/usr/sbin/system_profiler"
+        
+        // /usr/sbin/sysctl -n machdep.cpu.brand_string
+        // RESULT: (stdout: "Apple M1 Pro\n", stderr: "")
+        let cmd = "/usr/sbin/sysctl"
+        args.append(contentsOf: ["-n", "machdep.cpu.brand_string"])
+
+        let result = McProcess.run(
+            executableUrl: URL(fileURLWithPath: cmd, isDirectory: false), 
+            withArguments: args,
+            currentDirectory: nil,
+            printStdio: true
+        )
+        print(result)
+        print("completed 'testWhich'")
+    }
+    
+    func testSwitch() {
+        let value = "b"
+        
+        switch value {
+        case 
+            "a", 
+            "b":
+            print("testSwitch() case: works \(value)")
+        default:
+            print("testSwitch() case: default")
+        }
+        
+    }
+    
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
