@@ -9,7 +9,7 @@
 import Foundation
 
 public enum McProcessPathError: Error {
-    case notInstalled
+    case notInstalled(detail: String)
     case unknown
 }
 
@@ -19,48 +19,12 @@ public class McProcessPath {
     //
     private let _fm = FileManager.default
     
-    private let __formulae = [
-        "xfreerdp",                      // FreeRDP `xfreerdp /help`
-        "gm",                            // man GraphicsMagick
-        "gnuplot",
-        // :NYI: graphviz collection
-        "gs",        // Ghostscript: more tools /…/Cellar/ghostscript/*/bin
-        // --- icoutils ---
-        // "wrestool", // extract icons|cursors from MS executable|library
-        // "extresso" "genresscript" are optional perl scripts
-        "icotool",    // convert between `.ico`|`.cur` and `.png`
-        // --- ImageMagic ---
-        "identify", "magick", "mogrify", // man ImageMagick
-        // --- Markdown (various) ---
-        "cmark-gfm",     // .XOR. cmark 
-        "hoedown",
-        "markdown",      // multimarkdown .XOR. discount .XOR. original markdown (Perl)
-        "multimarkdown", // .XOR. discount .XOR. markdown .XOR. mtools
-        "mmd", "mmd2all", "mmd2epub", "mmd2fodt",    // multimarkdown
-        "mmd2odt", "mmd2opml", "mmd2pdf", "mmd2tex", // multimarkdown 
-        // ---
-        "octave", "octave-cli",              // Octave "mkoctfile", "octave-config"
-        // :NYI: opencv
-        // Poppler pdf*
-        "pdfattach", "pdfdetach", "pdffonts", "pdfimages", "pdfinfo",
-        "pdfseparate", "pdfsig", "pdftocairo", "pdftohtml", "pdftoppm",
-        "pdftops", "pdftotext", "pdfunite",
-        "swiftlint",
-        // :NYI: "tcl-tk"
-        "tidy",        // tidy-html5
-        "tree",
-        "uchardet",
-        "vapor",
-        "wget",
-        "yt-dlp",      // youtube-dl fork with additional features and fixes
-    ]
-    
     public func url(binaryName: String) throws -> URL {
         var path: String?
         
         if McBrew.cmd.isHomebrew(binaryName: binaryName) &&
             McBrew.cmd.isInstalled(binaryName: binaryName) == false {
-            throw McBrewError.formulaNotInstalled
+            throw McBrewError.formulaNotInstalled(name: binaryName)
         }
         
         if let p = McBrew.cmd.path(binaryName: binaryName) {
@@ -114,8 +78,7 @@ public class McProcessPath {
             if _fm.fileExists(atPath: path) {
                 return URL(fileURLWithPath: path, isDirectory: false)
             } else {
-                print(":NYI: McProcessPath `\(binaryName)` not install at `\(path)`")
-                throw McProcessPathError.notInstalled
+                throw McProcessPathError.notInstalled(detail: ":NYI: McProcessPath `\(binaryName)` not install at `\(path)`")
             }
         }
         

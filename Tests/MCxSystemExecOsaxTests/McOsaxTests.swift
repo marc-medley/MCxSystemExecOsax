@@ -188,8 +188,7 @@ class McOsaxTests: XCTestCase {
         r = McOsax.chooseFileName(prompt: "Select CANCEL:")
         print("r=\(String(describing: r))")
     }
-        
-
+    
     func testChooseFolder() {
         _ = McOsax.chooseFolder()
         
@@ -242,7 +241,7 @@ class McOsaxTests: XCTestCase {
         print("clipboard info = \(info)")
         
     }
-        
+    
     func testDelay() {
         McOsax.delay(seconds: 3.5794)
     }
@@ -309,7 +308,7 @@ class McOsaxTests: XCTestCase {
             icon: .stop)
         print("r=\(String(describing: r))")
     }
-
+    
     
     func testDisplayNotification() {
         McOsax.displayNotification(message: "Some message here.", title: "Test Notification")

@@ -9,9 +9,9 @@ import Foundation
 
 public enum McBrewError: Error {
     case brewNotInstalled
-    case formulaNotInstalled
+    case formulaNotInstalled(name: String)
     /// not listed. needs to be added.
-    case formulaNotRegistered
+    case formulaNotRegistered(name: String)
     case unknown
 }
 
@@ -22,6 +22,7 @@ struct BrewFormula {
     let bin: [String]
     /// list installed formula dependencies of FORMULA
     /// `brew deps --installed FORMULA` 
+    /// Note: selected subset of dependencies to be expressly installed.
     let deps: [String]?
     let info: String?
 }
@@ -36,7 +37,7 @@ struct McBrew {
     /// /usr/local    // Intel
     private var _brewBasePath: String?
     private var _brewCmdUrl: URL?
-
+    
     /// binary tools install by formulae. follows `_formulae`
     private var _bin = Set<String>()
     /// main formula dictionary. leads `_bin`
@@ -61,19 +62,73 @@ struct McBrew {
         add("cmake", bin: ["ccmake", "cmake", "cpack", "ctest"], info: "CMake")
         add("cmake-docs", bin: [], info: "CMake Documentation")
         add("cocoapods", bin: ["pod"], info: "CocoaPods")
-        add("ffmpeg", bin: ["ffmpeg", "ffprobe"],deps: ["cmake", "pkg-config"], info: "FFMpeg")
+        add("ffmpeg", bin: ["ffmpeg", "ffprobe"], deps: ["cmake", "pkg-config"], info: "FFMpeg")
         
         
         add("clamav", bin: ["clamscan", "freshclam"], deps: ["cmake", "pkg-config"], info: "ClamAV")
         add("pandoc", info: "Pandoc universal document converter")
         add("pkg-config", info: "Manage compile and link flags for libraries")
-        add("tesseract", bin: ["tesseract"],deps: ["pkg-config"], info: "OCR (Optical Character Recognition) engine.") // more tools in …/bin
+        add("tesseract", bin: ["tesseract"], deps: ["pkg-config"], info: "OCR (Optical Character Recognition) engine.") // more tools in …/bin
         add("sl", info: "Prints a steam locomotive.")
         
         // ------
-        // "autoconf", "autoheader", "autom4te", "autoreconf", "autoscan", "autoupdate"    "ifnames"
+        // "autoconf", "autoheader", "autom4te", "autoreconf", "autoscan", "autoupdate", "ifnames"
         add("autoconf", bin: ["autoconf"], info: "Automatic configure script builder")
-
+        
+        // --- ADD IN --- check binaryNames
+        add("freerdp", bin: ["xfreerdp"], info: "FreeRDP `xfreerdp /help`")
+        
+        add("graphicsmagick", bin: ["gm"], deps: ["pkg-config"], info: "man GraphicsMagick")
+        
+        add("gnuplot", bin: ["gnuplot"], deps: ["pkg-config"], info: "")
+        
+        add("graphviz", bin: ["graphviz"], deps: ["autoconf", "pkg-config"], info: "")
+        
+        add("ghostscript", bin: ["gs"], info: "Ghostscript: more tools /…/Cellar/ghostscript/*/bin")
+        
+        //// --- icoutils ---
+        // "extresso" "genresscript" are optional perl scripts
+        add("icoutils", bin: ["icotool", "wrestool"], info: "`icotool` converts between `.ico`|`.cur` and `.png`. `wrestool` extracts icons|cursors from MS executable|library")
+        
+        add("imagemagick", bin: ["identify", "magick", "mogrify"], info: "man ImageMagick")
+        
+        /// --- Markdown (various) ---
+        /// Note, not installed due to binary conflicts:
+        /// * cmark conflicts with cmark-gfm
+        /// * discount `markdown`, original `markdown` (Perl), and `mtools` conflict with multimarkdown `markdown`
+        add("cmark-gfm", bin: ["cmark-gfm"], deps: ["cmake"], info: "GitHub Flavored Markdown fork of `cmark` commonmark")
+        //add("hoedown", bin: ["hoedown"], info: "C-based Markdown processing")
+        add("multimarkdown", bin: ["markdown", "multimarkdown", "mmd", "mmd2all", "mmd2epub", "mmd2fodt", "mmd2odt", "mmd2opml", "mmd2pdf", "mmd2tex"], info: "Turn marked-up plain text into well-formatted documents.")
+        
+        // Octave: mkoctfile, octave-config
+        add("octave", bin: ["octave", "octave-cli"], deps: ["ghostscript", "gnuplot", "graphicsmagick", "vtk", "pkg-config"], info: "Octave")
+        
+        //// :NYI: opencv
+        add("opencv", bin: ["ffmpeg", "vtk"], info: "")
+        
+        add("poppler", bin: ["pdfattach", "pdfdetach", "pdffonts", "pdfimages", "pdfinfo", "pdfseparate", "pdfsig", "pdftocairo", "pdftohtml", "pdftoppm", "pdftops", "pdftotext", "pdfunite"], deps: ["cmake", "pkg-config"], info: "Poppler PDF rendering library (based on the xpdf-3.0 code base)")
+        
+        //"swiftlint",
+        add("swiftlint", bin: ["swiftlint"], info: "SwiftLint tool to enforce Swift style and conventions")
+        
+        //add("tcl-tk", bin: [""], info: "Tool Command Language")
+        
+        add("tidy-html5", bin: ["tidy"], deps: ["cmake"], info: "Granddaddy of HTML tools, with support for modern standards")
+        
+        add("tree", bin: ["tree"], info: "")
+        
+        add("uchardet", bin: ["uchardet"], deps: ["cmake"], info: "encoding detector library")
+        
+        add("vapor", bin: ["vapor"], info: "Command-line tool for Vapor (Server-side Swift web framework)")
+        
+        // :???: check for install binary
+        add("vtk", bin: [""], deps: ["cmake"], info: "Toolkit for 3D computer graphics, image processing, and visualization")
+        
+        //"wget",
+        add("wget", bin: ["wget"], deps: ["pkg-config"], info: "wget internet file retriever")
+        
+        //"yt-dlp",      // youtube-dl fork with additional features and fixes
+        add("yt-dlp", bin: ["yt-dlp"], info: "yt-dlp fork of youtube-dl with additional features and fixes")
     }
     
     mutating func add(_ formula: String, deps: [String]? = nil, info: String? = nil) {
@@ -89,11 +144,12 @@ struct McBrew {
     }
     
     func install(formula name: String) throws {
+        print(":McBrew.install(): \(name) installation started")
         guard let brewCmdUrl = _brewCmdUrl else {
             throw McBrewError.brewNotInstalled
         }
         guard let f = _formulae[name] else {
-            throw McBrewError.formulaNotRegistered
+            throw McBrewError.formulaNotRegistered(name: name)
         }
         do {
             if try isInstalled(formula: f.name) {
@@ -126,11 +182,15 @@ struct McBrew {
         print(":McBrew.install(): \(name) installation completed")
     }
     
-//    func installAll() {
-//        for f in _formulae {
-//            // install(formula: f.key)
-//        }
-//    }
+    func installAll() throws {
+        for f in _formulae {
+            do {
+                try install(formula: f.key)
+            } catch{
+                throw error
+            }
+        }
+    }
     
     func isInstalled(formula: String) throws -> Bool {
         guard let brewBasePath = _brewBasePath, let brewCmdUrl = _brewCmdUrl else {
@@ -143,7 +203,7 @@ struct McBrew {
                 var args: [String] = []
                 args += ["info"]
                 args += [f.name]
- 
+                
                 //let cmdUrl = try McProcessPath.cmd.url(name: "gm")
                 let r = McProcess.run(
                     executableUrl: brewCmdUrl, 
@@ -156,7 +216,7 @@ struct McBrew {
         }
         return false
     }
-
+    
     func isInstalled(binaryName: String) -> Bool {
         guard let brewBasePath = _brewBasePath else { return false }        
         let path = "\(brewBasePath)/bin/\(binaryName)"

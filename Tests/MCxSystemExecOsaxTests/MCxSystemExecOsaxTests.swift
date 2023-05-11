@@ -21,18 +21,6 @@ class MCxSystemExecOsaxTests: XCTestCase {
         super.tearDown()
     }
     
-    func testBrewInstall() {
-        // /opt/homebrew/bin/brew
-        // /usr/local/bin/brew
-        
-        let fm = FileManager.default
-        let isInUsrLocal = fm.fileExists(atPath: "/usr/local/bin/brew")
-        print("homebrew '/usr/local/bin/brew' isInUsrLocal: \(isInUsrLocal)")
-
-        let isInOptHomebrew = fm.fileExists(atPath: "/opt/homebrew/bin/brew")
-        print("homebrew '/opt/homebrew/bin/brew' isInOptHomebrew: \(isInOptHomebrew)")
-    }
-
     func testFindMachineInfo() {
         var args: [String] = []
         
@@ -53,7 +41,7 @@ class MCxSystemExecOsaxTests: XCTestCase {
         // RESULT: (stdout: "Apple M1 Pro\n", stderr: "")
         let cmd = "/usr/sbin/sysctl"
         args.append(contentsOf: ["-n", "machdep.cpu.brand_string"])
-
+        
         let result = McProcess.run(
             executableUrl: URL(fileURLWithPath: cmd, isDirectory: false), 
             withArguments: args,
@@ -62,20 +50,6 @@ class MCxSystemExecOsaxTests: XCTestCase {
         )
         print(result)
         print("completed 'testWhich'")
-    }
-    
-    func testSwitch() {
-        let value = "b"
-        
-        switch value {
-        case 
-            "a", 
-            "b":
-            print("testSwitch() case: works \(value)")
-        default:
-            print("testSwitch() case: default")
-        }
-        
     }
     
     func testExample() {
