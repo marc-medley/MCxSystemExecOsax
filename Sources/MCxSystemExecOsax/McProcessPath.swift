@@ -9,7 +9,6 @@
 import Foundation
 
 public enum McProcessPathError: Error {
-    case brewNotFound
     case notInstalled
     case unknown
 }
@@ -20,33 +19,54 @@ public class McProcessPath {
     //
     private let _fm = FileManager.default
     
-    // /opt/homebrew // Apple M1
-    // /usr/local    // Intel
-    private var _brewBasePath: String?
+    private let __formulae = [
+        "xfreerdp",                      // FreeRDP `xfreerdp /help`
+        "gm",                            // man GraphicsMagick
+        "gnuplot",
+        // :NYI: graphviz collection
+        "gs",        // Ghostscript: more tools /…/Cellar/ghostscript/*/bin
+        // --- icoutils ---
+        // "wrestool", // extract icons|cursors from MS executable|library
+        // "extresso" "genresscript" are optional perl scripts
+        "icotool",    // convert between `.ico`|`.cur` and `.png`
+        // --- ImageMagic ---
+        "identify", "magick", "mogrify", // man ImageMagick
+        // --- Markdown (various) ---
+        "cmark-gfm",     // .XOR. cmark 
+        "hoedown",
+        "markdown",      // multimarkdown .XOR. discount .XOR. original markdown (Perl)
+        "multimarkdown", // .XOR. discount .XOR. markdown .XOR. mtools
+        "mmd", "mmd2all", "mmd2epub", "mmd2fodt",    // multimarkdown
+        "mmd2odt", "mmd2opml", "mmd2pdf", "mmd2tex", // multimarkdown 
+        // ---
+        "octave", "octave-cli",              // Octave "mkoctfile", "octave-config"
+        // :NYI: opencv
+        // Poppler pdf*
+        "pdfattach", "pdfdetach", "pdffonts", "pdfimages", "pdfinfo",
+        "pdfseparate", "pdfsig", "pdftocairo", "pdftohtml", "pdftoppm",
+        "pdftops", "pdftotext", "pdfunite",
+        "swiftlint",
+        // :NYI: "tcl-tk"
+        "tidy",        // tidy-html5
+        "tree",
+        "uchardet",
+        "vapor",
+        "wget",
+        "yt-dlp",      // youtube-dl fork with additional features and fixes
+    ]
     
-    public init() {
-        if _fm.fileExists(atPath: "/opt/homebrew/bin/brew") {
-            // Apple M1 processor
-            _brewBasePath = "/opt/homebrew"
-        } else if _fm.fileExists(atPath: "/usr/local/bin/brew") {
-            // Intel processor
-            _brewBasePath = "/usr/local"
-        } else {
-            _brewBasePath = nil           
-        }
-    }
-    
-    public func url(name: String) throws -> URL {
+    public func url(binaryName: String) throws -> URL {
         var path: String?
         
-        guard let brewBasePath = _brewBasePath else {
-            throw McProcessPathError.brewNotFound
+        if McBrew.cmd.isHomebrew(binaryName: binaryName) &&
+            McBrew.cmd.isInstalled(binaryName: binaryName) == false {
+            throw McBrewError.formulaNotInstalled
         }
         
-        if _isHomebrew(name: name) {
-            path = "\(brewBasePath)/bin/\(name)"
+        if let p = McBrew.cmd.path(binaryName: binaryName) {
+            path = p
         } else {
-            switch name {
+            switch binaryName {
             case "cot": // CotEditor
                 path = "/usr/local/bin/cot"
             case "curl": 
@@ -94,48 +114,13 @@ public class McProcessPath {
             if _fm.fileExists(atPath: path) {
                 return URL(fileURLWithPath: path, isDirectory: false)
             } else {
-                print(":NYI: McProcessPath `\(name)` not install at `\(path)`")
+                print(":NYI: McProcessPath `\(binaryName)` not install at `\(path)`")
                 throw McProcessPathError.notInstalled
             }
         }
         
-        print(":NYI: McProcessPath has not yet implemented name: `\(name)`")
+        print(":NYI: McProcessPath has not yet implemented name: `\(binaryName)`")
         throw McProcessPathError.unknown
     }
     
-    private func _isHomebrew(name: String) -> Bool {
-        switch name {
-        case 
-            "cmark-gfm",
-            "ffmpeg",      // FFmpeg
-            "ffprobe",     // FFmpeg
-            "gm",          // GraphicsMagick
-            "gs",          // Ghostscript: more tools /…/Cellar/ghostscript/*/bin
-            "hoedown",
-            "identify",    // also man ImageMagick
-            "magick",      // also man ImageMagick
-            "markdown",    // Discount
-            "mogrify",     // also man ImageMagick
-            "multimarkdown",
-            "pandoc",
-            "pdfattach",   // Poppler
-            "pdfdetach",   // Poppler
-            "pdffonts",    // Poppler
-            "pdfimages",   // Poppler
-            "pdfinfo",     // Poppler
-            "pdfseparate", // Poppler
-            "pdfsig",      // Poppler
-            "pdftocairo",  // Poppler
-            "pdftohtml",   // Poppler
-            "pdftoppm",    // Poppler
-            "pdftops",     // Poppler
-            "pdftotext",   // Poppler
-            "pdfunite",    // Poppler
-            "tesseract",   // OCR
-            "wget":
-            return true
-        default:
-            return false
-        }
-    }
 }

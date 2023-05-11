@@ -23,7 +23,7 @@ public class McShell {
         args.append(wxh)
         args.append(toPath)
         
-        let cmdUrl = try McProcessPath.cmd.url(name: "gm")
+        let cmdUrl = try McProcessPath.cmd.url(binaryName: "gm")
         _ = McProcess.run(
             executableUrl: cmdUrl, 
             withArguments: args, 
@@ -43,7 +43,7 @@ public class McShell {
         args.append("icns")
         args.append(iconsetFolder)
         
-        let cmdUrl = try McProcessPath.cmd.url(name: "iconutil")
+        let cmdUrl = try McProcessPath.cmd.url(binaryName: "iconutil")
         _ = McProcess.run(
             executableUrl: cmdUrl, 
             withArguments: args, 
@@ -67,7 +67,7 @@ public class McShell {
         args.append("iconset")
         args.append(icnsFilename)
         
-        let cmdUrl = try McProcessPath.cmd.url(name: "iconutil")
+        let cmdUrl = try McProcessPath.cmd.url(binaryName: "iconutil")
         _ = McProcess.run(
             executableUrl: cmdUrl, 
             withArguments: args, 
@@ -106,7 +106,7 @@ public class McShell {
         args.append(contentsOf: ["--export-png=\(toPath)"])
         args.append(fromPath)
         
-        let cmdUrl = try McProcessPath.cmd.url(name: "inkscape")
+        let cmdUrl = try McProcessPath.cmd.url(binaryName: "inkscape")
         _ = McProcess.run(
             executableUrl: cmdUrl, 
             withArguments: args, 
@@ -125,7 +125,7 @@ public class McShell {
         var args: [String] = []
         args.append(dir)
         
-        let cmdUrl = try McProcessPath.cmd.url(name: "mkdir")
+        let cmdUrl = try McProcessPath.cmd.url(binaryName: "mkdir")
         _ = McProcess.run(
             executableUrl: cmdUrl, 
             withArguments: args, 
@@ -142,7 +142,7 @@ public class McShell {
         var args: [String] = []
         args.append(filePath)
         
-        let cmdUrl = try McProcessPath.cmd.url(name: "open")
+        let cmdUrl = try McProcessPath.cmd.url(binaryName: "open")
         _ = McProcess.run(
             executableUrl: cmdUrl, 
             withArguments: args, 
